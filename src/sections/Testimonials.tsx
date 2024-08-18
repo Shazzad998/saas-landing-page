@@ -7,6 +7,8 @@ import avatar6 from "@/assets/avatar-6.png";
 import avatar7 from "@/assets/avatar-7.png";
 import avatar8 from "@/assets/avatar-8.png";
 import avatar9 from "@/assets/avatar-9.png";
+import Image from "next/image";
+import { twMerge } from "tailwind-merge";
 
 const testimonials = [
   {
@@ -65,6 +67,59 @@ const testimonials = [
   },
 ];
 
+const firstColumn = testimonials.slice(0, 3);
+const secondColumn = testimonials.slice(3, 6);
+const thirdColumn = testimonials.slice(6, 9);
+
+const TestimonialColumn = (props: { className?: string;  testimonials: typeof testimonials }) => {
+  return (
+    <div className={twMerge("mt-10 flex flex-col gap-6 [mask-image:linear-gradient(to_bottom,transparent,black_25%,black_75%,transparent)]", props.className)}>
+      {props.testimonials.map(({ text, imageSrc, name, username }) => (
+        <div className="w-full max-w-xs rounded-3xl border border-gray-200 p-10 shadow-md shadow-indigo-100">
+          <div>{text}</div>
+          <div className="mt-5 flex items-center gap-2">
+            <Image
+              src={imageSrc}
+              alt={name}
+              width={40}
+              height={40}
+              className="h-10 w-10 rounded-full"
+            />
+            <div className="flex flex-col">
+              <div className="font-medium leading-5 tracking-tight">{name}</div>
+              <div className="leading-5 tracking-tight">{username}</div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
 export const Testimonials = () => {
-  return null;
+  return (
+    <section className="bg-white">
+      <div className="container">
+        <div className="mx-auto max-w-xl">
+          <div className="flex justify-center">
+            <div className="inline-flex rounded-lg border border-black/25 px-3 py-1 text-sm tracking-tight">
+              Testimonials
+            </div>
+          </div>
+          <h2 className="mt-5 bg-gradient-to-b from-black to-blue-900 bg-clip-text text-center text-3xl font-bold tracking-tighter text-transparent md:text-5xl md:leading-10">
+            What our users say
+          </h2>
+          <p className="mt-5 text-center text-lg font-medium leading-7 tracking-tight text-blue-950">
+            From intuitive design to pwerful features, our app has become an
+            essential tool for users around the world.
+          </p>
+        </div>
+        <div className="flex justify-center gap-6">
+          <TestimonialColumn testimonials={firstColumn} />
+          <TestimonialColumn testimonials={secondColumn} className="hidden md:flex" />
+          <TestimonialColumn testimonials={thirdColumn} className=" hidden lg:flex" />
+        </div>
+      </div>
+    </section>
+  );
 };
